@@ -3,8 +3,8 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/node"
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Movie Remix" },
+    { name: "description", content: "Welcome to Movie Remix!" },
   ];
 };
 
