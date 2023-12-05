@@ -1,6 +1,7 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/node"
+import { useState, useEffect } from "react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -24,21 +25,54 @@ export async function loader({}: LoaderFunctionArgs) {
 
 export default function Index() {
   const data: any = useLoaderData();
+  const [favorites, setFavorites] = useState<MovieType[]>([]);;
 
-  const addToFavorites = (movieId: any) => {
-    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+  interface MovieType {
+    id: any;
+    poster_path: any;
+    title: any;
+    overview: any;
+    release_date: any;
+    popularity: any;
+  }
 
-    if (!favorites.includes(movieId)) {
-      favorites.push(movieId);
-      localStorage.setItem('favorites', JSON.stringify(favorites));
-      console.log(`Movie with ID ${movieId} added to favorites.`);
+  useEffect(() => {
+    const storedFavorites = localStorage.getItem('favorites');
+    if (storedFavorites) {
+      setFavorites(JSON.parse(storedFavorites));
+    }
+  }, []);
+
+  const addToFavorites = (movie: any) => {
+    // Check if the movie is already in favorites
+    const isAlreadyInFavorites = checkIfInFavorites(movie);
+
+    if (!isAlreadyInFavorites) {
+      const movieToAdd = {
+        id: movie.id,
+        poster_path: movie.poster_path,
+        title: movie.title,
+        overview: movie.overview,
+        release_date: movie.release_date,
+        popularity: movie.popularity,
+      };
+
+      // Update the local state and localStorage
+      setFavorites((prevFavorites) => [...prevFavorites, movieToAdd]);
+      localStorage.setItem('favorites', JSON.stringify([...favorites, movieToAdd]));
+      console.log(`Movie with ID ${movie.id} added to favorites.`);
     } else {
-      console.log(`Movie with ID ${movieId} is already in favorites.`);
+      console.log(`Movie with ID ${movie.id} is already in favorites.`);
     }
   };
 
+  const checkIfInFavorites = (movie: any) => {
+    return favorites.some((fav: any) => fav.id === movie.id);
+  };
+
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 bg-black lg:grid-cols-4 mt-20">
+  <div className="bg-black"><br /><br /><br /><br />
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 ml-1">
       {data.results.map((movie: any) => (
         <div key={movie.id} className="bg-gray-900 rounded shadow p-4 hover:shadow-lg mt-2">
           <Link to={`/movie/${movie.id}`}>
@@ -57,14 +91,17 @@ export default function Index() {
             <p className="text-gray-500">Popularity: {movie.popularity}</p>
           </Link>
           <button
-            className="bg-white text-gray-900 hover:text-white hover:bg-red-500 font-bold py-2 px-4 rounded mt-4 mx-auto"
-            onClick={() => addToFavorites(movie.id)}
+            className={`bg-white text-gray-900 ${
+              checkIfInFavorites(movie) ? 'bg-blue-900 text-white pointer-events-none' : 'hover:text-white hover:bg-blue-900'
+            } font-bold py-2 px-4 rounded mt-4 mx-auto`}
+            onClick={() => addToFavorites(movie)}
           >
-            Add to Favorites
+            {checkIfInFavorites(movie) ? 'Added to Favorites' : 'Add to Favorites'}
           </button>
         </div>
       ))}
       <br />
     </div>
+  </div>
   );
 }

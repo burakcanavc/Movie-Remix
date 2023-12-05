@@ -28,17 +28,18 @@ export default function MovieId() {
   const data: any = useLoaderData();
 
   return (
-    <div className="h-screen bg-black flex items-center justify-center"><br />
+    <div className="bg-black h-screen items-center justify-center"><br /><br /><br />
       <div className="flex items-center">
         <img
         src={`https://image.tmdb.org/t/p/original/${data.backdrop_path}`}
         alt=""
-        className="w-auto h-80 mr-16 rounded-lg"
+        className="w-auto h-80 mr-16 rounded-md mt-10 ml-16"
         />
 
-        <div>
+        <div className="mr-36">
           <h1 className="text-2xl text-white font-bold mb-2">{data.title}</h1>
             <p className="text-white mb-2">{data.overview}</p>
+            <br />
             <p className="text-white mb-2">Popularity: {data.popularity}</p>
             <p className="text-white mb-2">Release Date: {data.release_date}</p>
         </div>
