@@ -25,14 +25,13 @@ export default function Favorites() {
       localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
       console.log(`ID'si ${movieId} olan film favorilerden kaldırıldı.`);
       // Eğer Remix Data Loader kullanıyorsanız burada yerel durumu güncelleyebilir veya veriyi tekrar çekebilirsiniz.
-      navigate('/favoritesPage', { replace: true });
+      navigate('/favorites', { replace: true });
     }
   };
 
   return (
   <div className={`${favorites.length === 0 ? 'min-h-screen bg-black' : 'bg-black'}`}>
     <br /><br /><br /><br />
-    {favorites.length === 0 ? 'Added to Favorites <br/>' : 'Add to Favorites'}
      {favorites.length > 0 && (
     <div className="grid grid-cols-1 gap-4 bg-black md:grid-cols-2 lg:grid-cols-4 ml-1">
       {favorites.map((movie: any) => (

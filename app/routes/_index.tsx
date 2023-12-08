@@ -91,9 +91,10 @@ export default function Index() {
             <p className="text-gray-500">Popularity: {movie.popularity}</p>
           </Link>
           <button
-            className={`bg-white text-gray-900 ${
-              checkIfInFavorites(movie) ? 'bg-blue-900 text-white pointer-events-none' : 'hover:text-white hover:bg-blue-900'
-            } font-bold py-2 px-4 rounded mt-4 mx-auto`}
+            className={`
+            ${checkIfInFavorites(movie) ? 'bg-blue-900 text-white pointer-events-none font-bold py-2 px-4 rounded mt-4 mx-auto' :
+            'bg-white text-gray-900 hover:text-white hover:bg-blue-900 font-bold py-2 px-4 rounded mt-4 mx-auto'
+            } `}
             onClick={() => addToFavorites(movie)}
           >
             {checkIfInFavorites(movie) ? 'Added to Favorites' : 'Add to Favorites'}
