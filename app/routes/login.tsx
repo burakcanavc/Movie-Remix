@@ -1,7 +1,6 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Form, Link, useLoaderData, useNavigate } from "@remix-run/react";
-import { json } from "@remix-run/node";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -12,18 +11,23 @@ export const meta: MetaFunction = () => {
 
 export default function Favorites() {
   const navigate = useNavigate();
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    emailInputRef.current?.focus();
+  }, []);
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-950 bg-gradient-to-r from-black">
       <div className="px-8 py-6 mt-4 text-left bg-gray-900 bg-gradient-to-r from-gray-800 shadow-lg w-full max-w-lg rounded-lg">
-        <h3 className="text-3xl font-bold text-center text-white">Giriş Yap</h3>
+        <h3 className="text-3xl font-bold text-center text-white">Log in</h3>
         <Form method="post" className="mt-4">
           <div>
             <label className="block text-white" htmlFor="email">
-              E-posta
+              E-mail
             </label>
             <input
+              ref={emailInputRef}
               type="email"
-              placeholder="E-posta adresinizi girin"
+              placeholder="Enter your e-mail address"
               name="email"
               id="email"
               className="w-full px-4 py-2 mt-2 border rounded-md bg-gray-700 text-white"
@@ -31,11 +35,11 @@ export default function Favorites() {
           </div>
           <div className="mt-4">
             <label className="block text-white" htmlFor="password">
-              Şifre
+              Password
             </label>
             <input
               type="password"
-              placeholder="Şifrenizi girin"
+              placeholder="Enter your password"
               name="password"
               id="password"
               className="w-full px-4 py-2 mt-2 border rounded-md bg-gray-700 text-white"
@@ -43,11 +47,14 @@ export default function Favorites() {
           </div>
           <div className="flex items-baseline justify-between mt-4">
             <button className="px-6 py-2 mt-4 bg-black bg-gradient-to-r from-gray-950 text-white rounded-lg text-lg hover:bg-gray-500">
-              Giriş Yap
+              Log in
             </button>
-            <a href="#" className="text-sm text-gray-400 hover:underline">
-              Şifremi unuttum
-            </a>
+            <Link
+              to={"/login"}
+              className="text-sm text-gray-400 hover:underline"
+            >
+              Forgot your password?
+            </Link>
           </div>
         </Form>
       </div>
