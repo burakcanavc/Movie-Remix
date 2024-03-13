@@ -45,7 +45,6 @@ export default function Index() {
   }, []);
 
   const addToFavorites = (movie: any) => {
-    // Check if the movie is already in favorites
     const isAlreadyInFavorites = checkIfInFavorites(movie);
 
     if (!isAlreadyInFavorites) {
@@ -58,7 +57,6 @@ export default function Index() {
         popularity: movie.popularity,
       };
 
-      // Update the local state and localStorage
       setFavorites((prevFavorites) => [...prevFavorites, movieToAdd]);
       localStorage.setItem(
         "favorites",

@@ -15,19 +15,40 @@ export default function Favorites() {
   useEffect(() => {
     emailInputRef.current?.focus();
   }, []);
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    if (!email) {
+      alert("Email address is required.");
+      return;
+    }
+
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters long.");
+      return;
+    }
+    if (email === "burakcanavc@gmail.com" && password === "12345678") {
+      navigate("/profile");
+    } else {
+      alert("Email or password is incorrect.");
+    }
+  };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-950 bg-gradient-to-r from-black">
       <div className="px-8 py-6 mt-4 text-left bg-gray-900 bg-gradient-to-r from-gray-800 shadow-lg w-full max-w-lg rounded-lg">
         <h3 className="text-3xl font-bold text-center text-white">Log in</h3>
-        <Form method="post" className="mt-4">
+        <Form method="post" className="mt-4" onSubmit={handleSubmit}>
           <div>
             <label className="block text-white" htmlFor="email">
-              E-mail
+              Email
             </label>
             <input
               ref={emailInputRef}
               type="email"
-              placeholder="Enter your e-mail address"
+              placeholder="Enter your email address"
               name="email"
               id="email"
               className="w-full px-4 py-2 mt-2 border rounded-md bg-gray-700 text-white"
